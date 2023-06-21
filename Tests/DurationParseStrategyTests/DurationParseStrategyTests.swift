@@ -48,6 +48,18 @@ final class DurationParseStrategyTests: XCTestCase {
         )
     }
     
+    func test_shouldUseLanguageCode_ifLocaleContainsCountryAndHasNoFittingLocalization() throws {
+        try assertParser(
+            .duration(locale: Locale(identifier: "en-GB")),
+            parserInput: "1 hour 1 minutes 5 seconds",
+            expectedOutput: DateComponents(
+                hour: 1,
+                minute: 1,
+                second: 5
+            )
+        )
+    }
+    
     func assertParser<P: ParseStrategy>(_ parser: P, parserInput: P.ParseInput, expectedOutput: P.ParseOutput) throws where P.ParseOutput: Equatable {
         XCTAssertEqual(try parser.parse(parserInput), expectedOutput)
     }
